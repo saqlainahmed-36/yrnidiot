@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You are an idiot!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #ff0000, #ff7700, #ffff00, #00ff00, #0000ff, #8b00ff);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            text-align: center;
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            10% { transform: translate(-10px, -10px) rotate(-5deg); }
+            20% { transform: translate(10px, 10px) rotate(5deg); }
+            30% { transform: translate(-10px, 10px) rotate(-5deg); }
+            40% { transform: translate(10px, -10px) rotate(5deg); }
+            50% { transform: translate(-10px, -10px) rotate(-5deg); }
+            60% { transform: translate(10px, 10px) rotate(5deg); }
+            70% { transform: translate(-10px, 10px) rotate(-5deg); }
+            80% { transform: translate(10px, -10px) rotate(5deg); }
+            90% { transform: translate(-10px, -10px) rotate(-5deg); }
+        }
+        
+        h1 {
+            font-size: 5rem;
+            color: white;
+            text-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .emoji {
+            font-size: 10rem;
+            animation: spin 2s linear infinite;
+            display: inline-block;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .message {
+            font-size: 2rem;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-top: 20px;
+        }
+        
+        #counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff0000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="counter">Attempts: 0/5</div>
+    
+    <div class="container">
+        <div class="emoji">😂</div>
+        <h1>YOU ARE AN IDIOT!</h1>
+        <div class="message">Ha ha ha ha ha ha ha!</div>
+    </div>
+    
+    <script>
+        let backAttempts = 0;
+        const maxAttempts = 5;
+        
+        // Push initial state
+        history.pushState(null, '', location.href);
+        
+        // Handle back button
+        window.addEventListener('popstate', function(event) {
+            if (backAttempts < maxAttempts) {
+                backAttempts++;
+                document.getElementById('counter').textContent = `Attempts: ${backAttempts}/${maxAttempts}`;
+                
+                // Push state again to prevent going back
+                history.pushState(null, '', location.href);
+                
+                // Show message
+                if (backAttempts < maxAttempts) {
+                    const messages = [
+                        "Nice try! 😈",
+                        "Not gonna work! 🤣",
+                        "Keep trying! 😂",
+                        "Almost there... NOT! 😜"
+                    ];
+                    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                    document.querySelector('.message').textContent = randomMsg;
+                } else {
+                    document.querySelector('.message').textContent = "Fine, you can go now... 🙄";
+                    document.getElementById('counter').style.background = 'rgba(0,255,0,0.9)';
+                }
+            }
+            // After 5 attempts, do nothing and allow normal back navigation
+        });
+        
+        // Optional: Play with the title
+        let titleIndex = 0;
+        const titles = ["YOU ARE AN IDIOT!", "HA HA HA!", "😂😂😂", "GOTCHA!"];
+        setInterval(() => {
+            document.title = titles[titleIndex];
+            titleIndex = (titleIndex + 1) % titles.length;
+        }, 500);
+    </script>
+</body>
+</html>
